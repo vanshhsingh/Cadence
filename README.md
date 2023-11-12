@@ -1,10 +1,6 @@
 # Cadence
 
 
-
-
-# Cadence Music App
-
 Cadence is an innovative music application designed to revolutionize the way you experience and interact with music. Whether you're a casual listener, an avid music enthusiast, or a musician, Cadence offers a seamless and immersive platform for discovering, streaming, and creating music.
 
 ## Features
