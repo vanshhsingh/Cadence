@@ -93,39 +93,45 @@ def previous_song():
     play_song(os.path.join(music_dir, songs[previous_song_index]))
 
 # Function to update the progress of the song
+# Global variable to track playing state
+playing = False
+
+# Function to update the progress of the song
 def update_progress():
-    global current_song
-    global progress_bar
+    global current_song, playing
+
     songs = os.listdir(music_dir)
     current_song_index = songs.index(current_song)
     audioFile = mutagen.mp3.MP3(os.path.join(music_dir, songs[current_song_index]))
     audioFileLength = audioFile.info.length
-    if current_song is not None and pygame.mixer.music.get_busy():
+
+    if current_song is not None and pygame.mixer.music.get_busy() and playing:
         progress_bar_position = (pygame.mixer.music.get_pos()) / 1000
         progress_bar = (progress_bar_position / audioFileLength) * 100
-        print(progress_bar)
         # Update the Tkinter slider
         progressSlider.set(progress_bar)
         app.after(1000, update_progress)  # Schedule the next update after 1000 milliseconds
 
+        # Check if the song has ended
+        if progress_bar >= 100:
+            next_song()  # Play the next song when the current song ends
+    else:
+        playing = False  # Reset playing state when the song is paused or ended
+
 # Master Play button
 def master_play():
-    global current_song
-    global playing
-    if current_song == None:
+    global current_song, playing
+    if current_song is None:
         playing = True
-        print(playing)
         play_song()
         update_progress()  # Start updating the progress bar
     elif pygame.mixer.music.get_busy():
         pause_song()
-        print(progress_bar)
     else:
         playing = True
-        print(playing)
         resume_song()
-        print(progress_bar)
         update_progress()  # Start updating the progress bar
+
 
 #Search bar
 def print_entry_text():
