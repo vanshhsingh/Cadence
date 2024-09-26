@@ -1,2 +1,2 @@
 # Cadence
-music app go brrrrr
+simple music app using python
